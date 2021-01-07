@@ -49,7 +49,7 @@ public class InteractionManager {
         String i_mean = scanner.nextLine();
         System.out.print("Interaction potential (positive/ neutral/ negative): ");
         String i_potential = scanner.nextLine();
-        Interaction inter1 = new Interaction(PaddingZeros(latestIdInter), doiCheck, i_lead, i_mean, i_potential);
+        Interaction inter1 = new Interaction(PaddingZeros(latestIdInter), doiCheck, "lead_" + PaddingZeros(Integer.parseInt(i_lead)), i_mean, i_potential);
         setLatestIdInter(++latestIdInter);
         this.Inters[size] = inter1;
         this.setSize(size + 1);
