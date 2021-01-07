@@ -1,14 +1,16 @@
-package rmit.w1;
+package com.company;
+
+import java.util.Date;
 
 public class Interaction {
 
     private String inter_id;
-    private String inter_doi;
+    private Date inter_doi;
     private String inter_ref;
     private String inter_mean;
     private String inter_potential;
 
-    public Interaction(String inter_id, String inter_doi, String inter_ref, String inter_mean, String inter_potential) {
+    public Interaction(String inter_id, Date inter_doi, String inter_ref, String inter_mean, String inter_potential) {
         this.inter_id = inter_id;
         this.inter_doi = inter_doi;
         this.inter_ref = inter_ref;
@@ -24,11 +26,11 @@ public class Interaction {
         this.inter_id = inter_id;
     }
 
-    public String getInter_doi() {
+    public Date getInter_doi() {
         return inter_doi;
     }
 
-    public void setInter_doi(String inter_doi) {
+    public void setInter_doi(Date inter_doi) {
         this.inter_doi = inter_doi;
     }
 

@@ -1,4 +1,4 @@
-package rmit.w1;
+package com.company;
 
 import java.io.*;
 import java.net.PasswordAuthentication;
@@ -7,16 +7,16 @@ import java.text.*;
 
 public class InteractionManager {
 
-    private static int i_id = 0;
+    private static int latestIdInter = 0;
     private Interaction[] Inters = new Interaction[100];
     private int size;
 
-    public static int getI_id() {
-        return i_id;
+    public static int getLatestIdInter() {
+        return latestIdInter;
     }
 
-    public static void setI_id(int i_id) {
-        InteractionManager.i_id = i_id;
+    public static void setLatestIdInter(int latestIdInter) {
+        InteractionManager.latestIdInter = latestIdInter;
     }
 
     public Interaction[] getInters() {
@@ -49,9 +49,8 @@ public class InteractionManager {
         String i_mean = scanner.nextLine();
         System.out.print("Interaction potential (positive/ neutral/ negative): ");
         String i_potential = scanner.nextLine();
-        Interaction inter1 = new Interaction(PaddingZeros(i_id), i_doi, i_lead, i_mean, i_potential);
-        this.setI_id(this.getSize());
-//        //this.setLastID(+ 1);
+        Interaction inter1 = new Interaction(PaddingZeros(latestIdInter), doiCheck, i_lead, i_mean, i_potential);
+        setLatestIdInter(++latestIdInter);
         this.Inters[size] = inter1;
         this.setSize(size + 1);
     }
