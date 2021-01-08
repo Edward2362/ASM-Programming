@@ -2,12 +2,13 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws ParseException, FileNotFoundException {
+    public static void main(String[] args) throws ParseException, IOException {
         LeadManager leadManager = new LeadManager();
         InteractionManager interactionManager = new InteractionManager();
         Scanner inputScanner = new Scanner(System.in);
@@ -29,10 +30,12 @@ public class Main {
 //        interactionManager.addInteraction();
 //        interactionManager.serialize();
 
-//        LeadManager.setLatestIdLead(lastIdLead);
-//        leadManager.addlead();
-//        leadManager.addlead();
-//        leadManager.serialize();
+        LeadManager.setLatestIdLead(lastIdLead);
+        leadManager.addLead();
+
+        leadManager.serialize();
+//        leadManager.update();
+//        leadManager.delete();
 
 //        while (true){
 //            System.out.print("Hello! How is your day \n" +
