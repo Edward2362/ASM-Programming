@@ -26,15 +26,18 @@ public class Main {
             lastIdInter++;
         }
 
-//        InteractionManager.setLatestIdInter(lastIdInter);
+        InteractionManager.setLatestIdInter(lastIdInter);
 //        interactionManager.addInteraction();
 //        interactionManager.serialize();
 
-        LeadManager.setLatestIdLead(lastIdLead);
-        leadManager.addLead();
+//        interactionManager.update();
+//        interactionManager.delete();
 
-        leadManager.serialize();
-//        leadManager.update();
+        LeadManager.setLatestIdLead(lastIdLead);
+//        leadManager.addLead();
+//        leadManager.serialize();
+
+        leadManager.update();
 //        leadManager.delete();
 
 //        while (true){

@@ -37,8 +37,8 @@ public class LeadManager {
         this.size = size;
     }
 
-    public Object[] askForLDetail(){
-        Object[] leadDetail = new Object[6];
+    public Object[] askForLDetail() {
+        Object[] leadDetail = null;
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Lead's name: ");
@@ -104,13 +104,18 @@ public class LeadManager {
     }
 
     public void delete(){
-        try {
+        try {// For File not found and not found ID
             boolean found = false;
             Scanner scanner = new Scanner(new File("Lead.txt"));
             Scanner scannerInput = new Scanner(System.in);
-            System.out.print("ID you want to delete?: ");
+            System.out.print("ID lead you want to delete?: ");
             String id = scannerInput.nextLine();
-            String l_id = "lead_" + String.format("%03d", Integer.parseInt(id));
+            String l_id = null;
+            try {
+                l_id = "lead_" + PaddingZeros(Integer.parseInt(id));
+            }catch (NumberFormatException e){
+                System.out.print("");
+            }
             StringBuffer updateList = new StringBuffer();
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
@@ -128,8 +133,9 @@ public class LeadManager {
                 fileWriter.write(updateArray[i]);
             }
             fileWriter.close();
+            System.out.println("Done");
             if (!found){
-                System.out.println("Not found");
+                System.out.println("Not found or wrong input type");
             }
         }
         catch (IOException | NullPointerException e){
@@ -138,18 +144,23 @@ public class LeadManager {
     }
 
     public void update(){
-        try {
+        try {// For File not found and not found ID
             boolean found = false;
             Scanner scanner = new Scanner(new File("Lead.txt"));
             Scanner scannerInput = new Scanner(System.in);
-            System.out.print("ID you want to change?: ");
+            System.out.print("ID lead you want to change?: ");
             String id = scannerInput.nextLine();
-            String l_id = "lead_" + String.format("%03d", Integer.parseInt(id));
+            String l_id = null;
+            try {
+                l_id = "lead_" + PaddingZeros(Integer.parseInt(id));
+            }catch (NumberFormatException e){
+                System.out.print("");
+            }
             StringBuffer updateList = new StringBuffer();
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
-                if (parts[0].equals(l_id)) {
+                if (parts[0].equals(l_id) && !parts[1].equals("deleted")) {
                     found = true;
                     Object[] updateLeadArr = askForLDetail();
                     updateList.append(l_id).append(",");
@@ -174,7 +185,7 @@ public class LeadManager {
             }
             fileWriter.close();
             if (!found){
-                System.out.println("Not found");
+                System.out.println("Not found or wrong input type");
             }
         }
         catch (IOException | NullPointerException e){
