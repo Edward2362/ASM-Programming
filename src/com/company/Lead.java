@@ -1,18 +1,19 @@
 package com.company;
 
 import  java.util.*;
+import  java.text.*;
 
 public class Lead {
 
     private String lead_id;
     private String lead_name;
-    private String lead_dob;
+    private Date lead_dob;
     private boolean lead_gender;
     private String lead_phone;
     private String lead_email;
     private String lead_address;
 
-    public Lead(String lead_id, String lead_name, String lead_dob, boolean lead_gender, String lead_phone, String lead_email, String lead_address) {
+    public Lead(String lead_id, String lead_name, Date lead_dob, boolean lead_gender, String lead_phone, String lead_email, String lead_address) {
         this.lead_id = lead_id;
         this.lead_name = lead_name;
         this.lead_dob = lead_dob;
@@ -38,11 +39,11 @@ public class Lead {
         this.lead_name = lead_name;
     }
 
-    public String getLead_dob() {
+    public Date getLead_dob() {
         return lead_dob;
     }
 
-    public void setLead_dob(String lead_dob) {
+    public void setLead_dob(Date lead_dob) {
         this.lead_dob = lead_dob;
     }
 
@@ -78,8 +79,12 @@ public class Lead {
         this.lead_address = lead_address;
     }
 
+    public String DatetoString(Date d){
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(d);}
+
     @Override
     public String toString() {
-        return "lead_" + lead_id + ',' + lead_name  + ',' + lead_dob + ',' + lead_gender + ',' + lead_phone + ',' + lead_email + ',' + lead_address;
+        return "lead_" + lead_id + ',' + lead_name  + ',' + DatetoString(lead_dob) + ',' + lead_gender + ',' + lead_phone + ',' + lead_email + ',' + lead_address;
     }
 }

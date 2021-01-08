@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.Date;
+import java.text.*;
 
 public class Interaction {
 
@@ -58,7 +59,11 @@ public class Interaction {
         this.inter_potential = inter_potential;
     }
 
+    public String DatetoString(Date d){
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        return df.format(d);}
+
     public String toString1() {
-        return "inter_" + inter_id + ',' + inter_doi + ',' + inter_ref + ',' + inter_mean + ',' + inter_potential;
+        return "inter_" + inter_id + ',' + DatetoString(inter_doi) + ',' + inter_ref + ',' + inter_mean + ',' + inter_potential;
     }
 }

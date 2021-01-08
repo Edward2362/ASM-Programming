@@ -43,9 +43,8 @@ public class LeadManager {
         System.out.print("Lead's date-of-birth: ");
         String dob = scanner.nextLine();
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        Date dobCheck;
-        dobCheck = df.parse(dob);
-        String l_dob = df.format(dobCheck);
+        Date l_dob;
+        l_dob = df.parse(dob);
         System.out.print("Lead's gender: ");
         boolean l_gender = scanner.nextBoolean();
         scanner.nextLine();

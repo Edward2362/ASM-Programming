@@ -15,22 +15,21 @@ public class Main {
         int lastIdInter = 0;
         Scanner scannerLead = new Scanner(new File("Lead.txt"));
         while (scannerLead.hasNext()){
-            scannerLead.nextLine();
+            System.out.println(scannerLead.nextLine());
             lastIdLead++;
         }
 
         Scanner scannerInter = new Scanner(new File("Interaction.txt"));
         while (scannerInter.hasNext()){
-            scannerInter.nextLine();
+            System.out.println(scannerInter.nextLine());
             lastIdInter++;
         }
 
-        LeadManager.setLatestIdLead(lastIdLead);
-        InteractionManager.setLatestIdInter(lastIdInter);
+//        InteractionManager.setLatestIdInter(lastIdInter);
+//        interactionManager.addInteraction();
+//        interactionManager.serialize();
 
-        interactionManager.addInteraction();
-        interactionManager.serialize();
-
+//        LeadManager.setLatestIdLead(lastIdLead);
 //        leadManager.addlead();
 //        leadManager.addlead();
 //        leadManager.serialize();
