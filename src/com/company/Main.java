@@ -14,11 +14,11 @@ public class Main {
         Scanner inputScanner = new Scanner(System.in);
         int lastIdLead = 0;
         int lastIdInter = 0;
-        Scanner scannerLead = new Scanner(new File("Lead.txt"));
-        while (scannerLead.hasNext()){
-            System.out.println(scannerLead.nextLine());
-            lastIdLead++;
-        }
+//        Scanner scannerLead = new Scanner(new File("Lead.txt"));
+//        while (scannerLead.hasNext()){
+//            System.out.println(scannerLead.nextLine());
+//            lastIdLead++;
+//        }
 
         Scanner scannerInter = new Scanner(new File("Interaction.txt"));
         while (scannerInter.hasNext()){
@@ -33,12 +33,16 @@ public class Main {
 //        interactionManager.update();
 //        interactionManager.delete();
 
+        interactionManager.intersByPotential();
+
         LeadManager.setLatestIdLead(lastIdLead);
 //        leadManager.addLead();
 //        leadManager.serialize();
 
-        leadManager.update();
+//        leadManager.update();
 //        leadManager.delete();
+
+//        leadManager.leadsByAges();
 
 //        while (true){
 //            System.out.print("Hello! How is your day \n" +

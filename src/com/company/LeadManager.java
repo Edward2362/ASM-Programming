@@ -41,30 +41,38 @@ public class LeadManager {
         Object[] leadDetail = null;
         try {
             Scanner scanner = new Scanner(System.in);
+
             System.out.print("Lead's name: ");
             String l_name = scanner.nextLine();
+
             System.out.print("Lead's date-of-birth (dd-MM-yyyy): ");
             String dob = scanner.nextLine();
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
             Date checkDate;
             checkDate = df.parse(dob);
+
             System.out.print("Lead's gender (true if man/false if woman): ");
             boolean l_gender = scanner.nextBoolean();
             scanner.nextLine();
+
             System.out.print("Lead's phone number: ");
             String l_phone = scanner.nextLine();
             int checkPhone;
             checkPhone = Integer.parseInt(l_phone);
+
             System.out.print("Lead's email: ");
             String l_email = scanner.nextLine();
+
             System.out.print("Lead's address: ");
             String l_address = scanner.nextLine();
+
             leadDetail = new Object[]{l_name,
                                       checkDate,
                                       Boolean.toString(l_gender),
                                       l_phone,
                                       l_email,
                                       l_address};
+
         }catch (ParseException | InputMismatchException | NumberFormatException e){
             System.out.println("Wrong Input type");
         }
@@ -105,9 +113,10 @@ public class LeadManager {
 
     public void delete(){
         try {// For File not found and not found ID
-            boolean found = false;
             Scanner scanner = new Scanner(new File("Lead.txt"));
             Scanner scannerInput = new Scanner(System.in);
+
+            boolean found = false;
             System.out.print("ID lead you want to delete?: ");
             String id = scannerInput.nextLine();
             String l_id = null;
@@ -117,6 +126,7 @@ public class LeadManager {
                 System.out.print("");
             }
             StringBuffer updateList = new StringBuffer();
+
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
@@ -127,6 +137,8 @@ public class LeadManager {
                     updateList.append(line).append("\n").append(";");
                 }
             }
+            scanner.close();
+
             String[] updateArray = updateList.toString().split(";");
             FileWriter fileWriter = new FileWriter(new File("Lead.txt"));
             for (int i = 0; i < updateArray.length; i++) {
@@ -145,9 +157,10 @@ public class LeadManager {
 
     public void update(){
         try {// For File not found and not found ID
-            boolean found = false;
             Scanner scanner = new Scanner(new File("Lead.txt"));
             Scanner scannerInput = new Scanner(System.in);
+
+            boolean found = false;
             System.out.print("ID lead you want to change?: ");
             String id = scannerInput.nextLine();
             String l_id = null;
@@ -157,6 +170,7 @@ public class LeadManager {
                 System.out.print("");
             }
             StringBuffer updateList = new StringBuffer();
+
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
@@ -178,6 +192,8 @@ public class LeadManager {
                     updateList.append(line).append("\n").append(";");
                 }
             }
+            scanner.close();
+
             String[] updateArray = updateList.toString().split(";");
             FileWriter fileWriter = new FileWriter(new File("Lead.txt"));
             for (int i = 0; i < updateArray.length; i++) {
@@ -190,6 +206,53 @@ public class LeadManager {
         }
         catch (IOException | NullPointerException e){
             System.out.println("");
+        }
+    }
+
+    public void leadsByAges() {
+        try {
+            Scanner scanner = new Scanner(new File("Lead.txt"));
+
+            String[] data;
+            int age10 = 0;
+            int age10to20 = 0;
+            int age20to60 = 0;
+            int age60above = 0;
+            while (scanner.hasNext()) {  //returns a boolean value
+                data = scanner.nextLine().split(",");
+                if (data[1].equals("deleted") && scanner.hasNext()) {
+                    data = scanner.nextLine().split(",");
+                }else if (data[1].equals("deleted")) {
+                    scanner.close();
+                    break;
+                }
+
+                Date birthdate = new SimpleDateFormat("dd-MM-yyyy").parse(data[2]);
+
+                Date currentdate = new Date();
+
+                int diffInDays = (int) ((currentdate.getTime() - birthdate.getTime())
+                        / (1000 * 60 * 60 * 24));
+                double age = diffInDays / 365.25;
+                double actualAge = Math.floor(age);
+                if (actualAge > 60) {
+                    age60above++;
+                } else if (actualAge > 20) {
+                    age20to60++;
+                } else if (actualAge > 10) {
+                    age10to20++;
+                } else {
+                    age10++;
+                }
+            }
+            System.out.println("0-10 (years old): " + age10);
+            System.out.println("10-20 (years old): " + age10to20);
+            System.out.println("20-60 (years old): " + age20to60);
+            System.out.println(">60 (years old): " + age60above);
+
+            scanner.close();
+        }catch (ParseException | FileNotFoundException e){
+            System.out.println("Missing file Lead.txt");
         }
     }
 
