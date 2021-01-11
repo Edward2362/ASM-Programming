@@ -41,10 +41,10 @@ public class InteractionManager {
             Scanner scanner = new Scanner(System.in);
 
             System.out.print("Date of interaction (dd-MM-yyyy): ");
-            String doi = scanner.nextLine();
+            String unTestedDate = scanner.nextLine();
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-            Date checkDate;
-            checkDate = df.parse(doi);
+            Date i_doi;
+            i_doi = df.parse(unTestedDate);
 
             System.out.print("Involved lead: ");
             String i_lead = scanner.nextLine();
@@ -57,7 +57,7 @@ public class InteractionManager {
             System.out.print("Interaction potential (positive/ neutral/ negative): ");
             String i_potential = scanner.nextLine();
 
-            interDetail = new Object[]{checkDate,
+            interDetail = new Object[]{i_doi,
                                        i_lead,
                                        i_mean,
                                        i_potential};
@@ -71,9 +71,9 @@ public class InteractionManager {
         try {
             Object[] interDetail = askForIDetail();
             Interaction inter1 = new Interaction(
-                    PaddingZeros(latestIdInter),
+                    modifyId(latestIdInter),
                     (Date) interDetail[0],
-                    "lead_" + PaddingZeros(Integer.parseInt(interDetail[1].toString())),
+                    "lead_" + modifyId(Integer.parseInt(interDetail[1].toString())),
                     interDetail[2].toString(),
                     interDetail[3].toString());
             setLatestIdInter(++latestIdInter);
@@ -107,7 +107,7 @@ public class InteractionManager {
             String id = scannerInput.nextLine();
             String i_id = null;
             try {
-                i_id = "inter_" + PaddingZeros(Integer.parseInt(id));
+                i_id = "inter_" + modifyId(Integer.parseInt(id));
             }catch (NumberFormatException e){
                 System.out.print("");
             }
@@ -151,7 +151,7 @@ public class InteractionManager {
             String id = scannerInput.nextLine();
             String i_id = null;
             try {
-                i_id = "inter_" + PaddingZeros(Integer.parseInt(id));
+                i_id = "inter_" + modifyId(Integer.parseInt(id));
             }catch (NumberFormatException e){
                 System.out.print("");
             }
@@ -172,7 +172,7 @@ public class InteractionManager {
                             parts[pElement] = updateLeadArr[uElement].toString();
                         }
                     }
-                    String updateLine = parts[1] + "," + "lead_" + PaddingZeros(Integer.parseInt(parts[2])) + "," + parts[3] + "," + parts[4] + "\n";
+                    String updateLine = parts[1] + "," + "lead_" + modifyId(Integer.parseInt(parts[2])) + "," + parts[3] + "," + parts[4] + "\n";
                     updateList.append(updateLine).append(";");
                 } else {
                     updateList.append(line).append("\n").append(";");
@@ -200,17 +200,24 @@ public class InteractionManager {
             Scanner scanner = new Scanner(new File("Interaction.txt"));
             Scanner scannerInput = new Scanner(System.in);
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-            Date checkSDate = null;
-            Date checkEDate = null;
+            Date startDate = null;
+            Date endDate = null;
 
             try {
-                System.out.print("Start date (dd-MM-yyyy):");
-                String startDate = scannerInput.nextLine();
-                checkSDate = df.parse(startDate);
+                while (true){
+                    System.out.print("Start date (dd-MM-yyyy):");
+                    String unTestedSDate = scannerInput.nextLine();
+                    startDate = df.parse(unTestedSDate);
 
-                System.out.print("End date (dd-MM-yyyy):");
-                String endDate = scannerInput.nextLine();
-                checkEDate = df.parse(endDate);
+                    System.out.print("End date (dd-MM-yyyy):");
+                    String unTestedEDate = scannerInput.nextLine();
+                    endDate = df.parse(unTestedEDate);
+                    if (endDate.before(startDate)){
+                        System.out.println("End date is before start date");
+                    }else{
+                        break;
+                    }
+                }
             }catch (ParseException e){
                 System.out.println("Wrong Input Type!");
             }
@@ -229,14 +236,13 @@ public class InteractionManager {
                 }
 
                 Date dateInter = new SimpleDateFormat("dd-MM-yyyy").parse(data[1]);
-
-                boolean reportPeriod = dateInter.compareTo(checkSDate) >= 0 && dateInter.compareTo(checkEDate) <= 0;
+                boolean reportPeriod = dateInter.compareTo(startDate) >= 0 && dateInter.compareTo(endDate) <= 0;
 
                 if (reportPeriod && data[4].equals("positive")) {
                     positive++;
                 } else if (reportPeriod && data[4].equals("neutral")) {
                     neutral++;
-                } else {
+                } else if (reportPeriod && data[4].equals("negative")){
                     negative++;
                 }
             }
@@ -252,62 +258,96 @@ public class InteractionManager {
 
     public void intersByMonth() {
         try {
-            Scanner scanner = new Scanner(new File("Interaction.txt"));
             Scanner scannerInput = new Scanner(System.in);
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-            Date checkSDate = null;
-            Date checkEDate = null;
-
-            
+            Date startDate = null;
+            Date endDate = null;
 
             try {
-                System.out.print("Start date (dd-MM-yyyy):");
-                String startDate = scannerInput.nextLine();
-                checkSDate = df.parse(startDate);
+                while (true){
+                    System.out.print("Start date (dd-MM-yyyy):");
+                    String unTestedSDate = scannerInput.nextLine();
+                    startDate = df.parse(unTestedSDate);
 
-                System.out.print("End date (dd-MM-yyyy):");
-                String endDate = scannerInput.nextLine();
-                checkEDate = df.parse(endDate);
+                    System.out.print("End date (dd-MM-yyyy):");
+                    String unTestedEDate = scannerInput.nextLine();
+                    endDate = df.parse(unTestedEDate);
+                    if (endDate.before(startDate)){
+                        System.out.println("End date is before start date");
+                    }else{
+                        break;
+                    }
+                }
             }catch (ParseException e){
                 System.out.println("Wrong Input Type!");
             }
 
-            String[] data;
-            int positive = 0;
-            int negative = 0;
-            int neutral = 0;
-            while (scanner.hasNext()) {  //returns a boolean value
-                data = scanner.nextLine().split(",");
-                if (data[1].equals("deleted") && scanner.hasNext()) {
-                    data = scanner.nextLine().split(",");
-                }else if (data[1].equals("deleted")) {
-                    scanner.close();
-                    break;
+            StringBuffer monthsWithYear = new StringBuffer();
+            int yearOfSDate = startDate.getYear() + 1900;
+            int yearOfEDate = endDate.getYear() + 1900;
+
+            if (yearOfSDate < yearOfEDate){
+                for (int monthOfSYear = startDate.getMonth() + 1; monthOfSYear < 13; monthOfSYear++) {
+                    monthsWithYear.append(String.format("%02d", monthOfSYear)).append("-").append(yearOfSDate).append(",");
                 }
-
-                Date dateInter = new SimpleDateFormat("dd-MM-yyyy").parse(data[1]);
-
-                boolean reportPeriod = dateInter.compareTo(checkSDate) >= 0 && dateInter.compareTo(checkEDate) <= 0;
-
-                if (reportPeriod && data[4].equals("positive")) {
-                    positive++;
-                } else if (reportPeriod && data[4].equals("neutral")) {
-                    neutral++;
-                } else {
-                    negative++;
+                while (yearOfSDate < yearOfEDate){
+                    yearOfSDate++;
+                    if (yearOfSDate == yearOfEDate){
+                        for (int monthOfEyear = 1; monthOfEyear <= endDate.getMonth() + 1; monthOfEyear++) {
+                            monthsWithYear.append(String.format("%02d", monthOfEyear)).append("-").append(yearOfSDate).append(",");
+                        }
+                    }else {
+                        for (int monthOfOYear = 1; monthOfOYear < 13; monthOfOYear++) {
+                            monthsWithYear.append(String.format("%02d", monthOfOYear)).append("-").append(yearOfSDate).append(",");
+                        }
+                    }
+                }
+            }else {
+                for (int monthSYear = startDate.getMonth() + 1; monthSYear <= endDate.getMonth() + 1; monthSYear++) {
+                    monthsWithYear.append(monthSYear).append("-").append(yearOfSDate).append(",");
                 }
             }
-            System.out.println("Positive: " + positive);
-            System.out.println("Neutral: " + neutral);
-            System.out.println("Negative: " + negative);
 
-            scanner.close();
+            String[] mWYArr = monthsWithYear.toString().split(",");
+            int [] countInter = new int[mWYArr.length];
+            String[] data;
+            int display = 0;
+            while (display < mWYArr.length) {
+                int counter = 0;
+                Scanner scanner = new Scanner(new File("Interaction.txt"));
+                while (scanner.hasNext()) {  //returns a boolean value
+                    data = scanner.nextLine().split(",");
+                    if (data[1].equals("deleted") && scanner.hasNext()) {
+                        data = scanner.nextLine().split(",");
+                    } else if (data[1].equals("deleted")) {
+                        scanner.close();
+                        break;
+                    }
+
+                    Date dateInterFullDate = new SimpleDateFormat("dd-MM-yyyy").parse(data[1]);
+                    DateFormat dateWMonthYear = new SimpleDateFormat("MM-yyyy");
+
+                    boolean reportPeriod = dateInterFullDate.compareTo(startDate) >= 0 && dateInterFullDate.compareTo(endDate) <= 0;
+
+                    if (reportPeriod && data[1].contains(mWYArr[display])) {
+                        counter++;
+                    }
+                }
+                scanner.close();
+
+                countInter[display] = counter;
+                display++;
+            }
+                for (int i = 0; i < mWYArr.length; i++) {
+                    System.out.println(mWYArr[i] + ": " + countInter[i]);
+                }
+
         }catch (ParseException | FileNotFoundException | NullPointerException e){
             System.out.println("");
         }
     }
 
-    public static String PaddingZeros(int value) {
+    public static String modifyId(int value) {
         return String.format("%03d", value);
     }
 }

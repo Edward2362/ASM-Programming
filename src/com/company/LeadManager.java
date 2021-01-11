@@ -46,10 +46,10 @@ public class LeadManager {
             String l_name = scanner.nextLine();
 
             System.out.print("Lead's date-of-birth (dd-MM-yyyy): ");
-            String dob = scanner.nextLine();
+            String unTestedDate = scanner.nextLine();
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-            Date checkDate;
-            checkDate = df.parse(dob);
+            Date l_dob;
+            l_dob = df.parse(unTestedDate);
 
             System.out.print("Lead's gender (true if man/false if woman): ");
             boolean l_gender = scanner.nextBoolean();
@@ -67,7 +67,7 @@ public class LeadManager {
             String l_address = scanner.nextLine();
 
             leadDetail = new Object[]{l_name,
-                                      checkDate,
+                                      l_dob,
                                       Boolean.toString(l_gender),
                                       l_phone,
                                       l_email,
@@ -83,7 +83,7 @@ public class LeadManager {
         try {
             Object[] leadDetail = askForLDetail();
             Lead newLead = new Lead(
-                    PaddingZeros(latestIdLead),
+                    modifyId(latestIdLead),
                     leadDetail[0].toString(),
                     (Date) leadDetail[1],
                     Boolean.getBoolean((String) leadDetail[2]),
@@ -103,7 +103,7 @@ public class LeadManager {
         try {
             fileWriter = new FileWriter(new File("Lead.txt"), true);
             for (int i = 0; i < getSize(); i++) {
-                fileWriter.write(String.valueOf(this.getLeads()[i].toString()) + "\n");
+                fileWriter.write(this.getLeads()[i].toString() + "\n");
             }
             fileWriter.close();
         } catch (IOException e) {
@@ -121,7 +121,7 @@ public class LeadManager {
             String id = scannerInput.nextLine();
             String l_id = null;
             try {
-                l_id = "lead_" + PaddingZeros(Integer.parseInt(id));
+                l_id = "lead_" + modifyId(Integer.parseInt(id));
             }catch (NumberFormatException e){
                 System.out.print("");
             }
@@ -165,7 +165,7 @@ public class LeadManager {
             String id = scannerInput.nextLine();
             String l_id = null;
             try {
-                l_id = "lead_" + PaddingZeros(Integer.parseInt(id));
+                l_id = "lead_" + modifyId(Integer.parseInt(id));
             }catch (NumberFormatException e){
                 System.out.print("");
             }
@@ -228,13 +228,12 @@ public class LeadManager {
                 }
 
                 Date birthdate = new SimpleDateFormat("dd-MM-yyyy").parse(data[2]);
-
-                Date currentdate = new Date();
-
-                int diffInDays = (int) ((currentdate.getTime() - birthdate.getTime())
+                Date currentDate = new Date();
+                int diffInDays = (int) ((currentDate.getTime() - birthdate.getTime())
                         / (1000 * 60 * 60 * 24));
                 double age = diffInDays / 365.25;
                 double actualAge = Math.floor(age);
+
                 if (actualAge > 60) {
                     age60above++;
                 } else if (actualAge > 20) {
@@ -256,7 +255,7 @@ public class LeadManager {
         }
     }
 
-    public static String PaddingZeros(int value) {
+    public static String modifyId(int value) {
         return String.format("%03d", value);
     }
 }
