@@ -36,35 +36,81 @@ public class InteractionManager {
     }
 
     public Object[] askForIDetail() {
-        Object[] interDetail = null;
-        try {
-            Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+        boolean check = false;
+        Date i_doi = null;
+        String i_lead = "";
+        String i_mean = "";
+        String i_potential = "";
 
-            System.out.print("Date of interaction (dd-MM-yyyy): ");
-            String unTestedDate = scanner.nextLine();
-            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-            Date i_doi;
-            i_doi = df.parse(unTestedDate);
-
-            System.out.print("Involved lead: ");
-            String i_lead = scanner.nextLine();
-            int checkId;
-            checkId = Integer.parseInt(i_lead);
-
-            System.out.print("Mean of interaction (email/ telephone/ face to face/ social media): ");
-            String i_mean = scanner.nextLine();
-
-            System.out.print("Interaction potential (positive/ neutral/ negative): ");
-            String i_potential = scanner.nextLine();
-
-            interDetail = new Object[]{i_doi,
-                                       i_lead,
-                                       i_mean,
-                                       i_potential};
-        }catch (ParseException | NumberFormatException e){
-            System.out.println("Wrong Input type");
+        while (!check) {
+            try {
+                System.out.print("Date of interaction (dd-MM-yyyy): ");
+                String unTestedDate = scanner.nextLine();
+                if (unTestedDate.equals("")){
+                    System.out.println("Date cannot be blank!");
+                }else {
+                    DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                    i_doi = df.parse(unTestedDate);
+                    check = true;
+                }
+            } catch (ParseException e) {
+                System.out.println("Wrong Date format!");
+                check = false;
+            }
         }
-        return interDetail;
+        check = false;
+
+        while (!check) {
+            try {
+                System.out.print("Involved lead: ");
+                i_lead = scanner.nextLine();
+                if (i_lead.equals("")){
+                    System.out.println("Lead ID cannot be blank!");
+                }else {
+                    int checkId = Integer.parseInt(i_lead);
+                    check = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Wrong ID format!");
+                check = false;
+            }
+        }
+        check = false;
+
+        while (!check) {
+            System.out.print("Mean of interaction (email/ telephone/ face to face/ social media): ");
+            i_mean = scanner.nextLine();
+            if (i_mean.equals("")){
+                System.out.println("Mean of interaction cannot be blank!");
+            }else if (!(i_mean.equalsIgnoreCase("email") ||
+                    i_mean.equalsIgnoreCase("telephone") ||
+                    i_mean.equalsIgnoreCase("face to face") ||
+                    i_mean.equalsIgnoreCase("social media"))) {
+                System.out.println("Wrong mean of contact!");
+            }else {
+                check = true;
+            }
+        }
+        check = false;
+
+        while (!check) {
+            System.out.print("Interaction potential (positive/ neutral/ negative): ");
+            i_potential = scanner.nextLine();
+            if (i_potential.equals("")){
+                System.out.println("Interaction potential cannot be blank!");
+            } else if (!(i_potential.equalsIgnoreCase("positive") ||
+                    i_potential.equalsIgnoreCase("neutral") ||
+                    i_potential.equalsIgnoreCase("negative"))) {
+                System.out.println("Wrong rating format!");
+            }else {
+                check = true;
+            }
+        }
+        return new Object[]{i_doi,
+                            i_lead,
+                            i_mean,
+                            i_potential};
     }
 
     public void addInteraction(){
@@ -93,7 +139,7 @@ public class InteractionManager {
             }
             fileWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Missing file Interaction.txt");;
         }
     }
 
@@ -101,15 +147,22 @@ public class InteractionManager {
         try {// For File not found and not found ID
             Scanner scanner = new Scanner(new File("Interaction.txt"));
             Scanner scannerInput = new Scanner(System.in);
-
             boolean found = false;
-            System.out.print("ID interaction you want to delete?: ");
-            String id = scannerInput.nextLine();
+            String id = "";
+
+            boolean check = false;
             String i_id = null;
-            try {
-                i_id = "inter_" + modifyId(Integer.parseInt(id));
-            }catch (NumberFormatException e){
-                System.out.print("");
+            while (!check) {
+                try {
+                    System.out.print("ID interaction you want to delete?: ");
+                    id = scannerInput.nextLine();
+                    int checkId = Integer.parseInt(id);
+                    i_id = "inter_" + modifyId(checkId);
+                    check = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong ID format!");
+                    check = false;
+                }
             }
             StringBuffer updateList = new StringBuffer();
 
@@ -131,13 +184,12 @@ public class InteractionManager {
                 fileWriter.write(updateArray[i]);
             }
             fileWriter.close();
-            System.out.println("Done");
             if (!found){
                 System.out.println("Not found or wrong input type");
             }
         }
         catch (IOException | NullPointerException e){
-            System.out.println("");
+            System.out.println("Missing file Interaction.txt");
         }
     }
 
@@ -145,15 +197,22 @@ public class InteractionManager {
         try {// For File not found and not found ID
             Scanner scanner = new Scanner(new File("Interaction.txt"));
             Scanner scannerInput = new Scanner(System.in);
-
             boolean found = false;
-            System.out.print("ID interaction you want to change?: ");
-            String id = scannerInput.nextLine();
+            String id = "";
+
+            boolean check = false;
             String i_id = null;
-            try {
-                i_id = "inter_" + modifyId(Integer.parseInt(id));
-            }catch (NumberFormatException e){
-                System.out.print("");
+            while (!check) {
+                try {
+                    System.out.print("ID interaction you want to delete?: ");
+                    id = scannerInput.nextLine();
+                    int checkId = Integer.parseInt(id);
+                    i_id = "inter_" + modifyId(checkId);
+                    check = true;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong ID format!");
+                    check = false;
+                }
             }
             StringBuffer updateList = new StringBuffer();
 
@@ -187,11 +246,11 @@ public class InteractionManager {
             }
             fileWriter.close();
             if (!found){
-                System.out.println("Not found or wrong input type");
+                System.out.println("Not found!");
             }
         }
         catch (IOException | NullPointerException e){
-            System.out.println("");
+            System.out.println("Missing file Interaction.txt");
         }
     }
 
@@ -219,7 +278,7 @@ public class InteractionManager {
                     }
                 }
             }catch (ParseException e){
-                System.out.println("Wrong Input Type!");
+                System.out.println("Wrong Date format!");
             }
 
             String[] data;
@@ -246,19 +305,19 @@ public class InteractionManager {
                     negative++;
                 }
             }
-            System.out.println("Positive: " + positive);
-            System.out.println("Neutral: " + neutral);
-            System.out.println("Negative: " + negative);
+            System.out.format("%-15s%-15s%-15s","Positive", "Neutral", "Negative");
+            System.out.println("");
+            System.out.format("%-15s%-15s%-15s", positive, neutral, negative);
 
             scanner.close();
         }catch (ParseException | FileNotFoundException | NullPointerException e){
-            System.out.println("");
+            System.out.println("Missing file Interaction.txt");
         }
     }
 
     public void intersByMonth() {
         try {
-            Scanner scannerInput = new Scanner(System.in);
+            Scanner inputScanner = new Scanner(System.in);
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
             Date startDate = null;
             Date endDate = null;
@@ -266,11 +325,11 @@ public class InteractionManager {
             try {
                 while (true){
                     System.out.print("Start date (dd-MM-yyyy):");
-                    String unTestedSDate = scannerInput.nextLine();
+                    String unTestedSDate = inputScanner.nextLine();
                     startDate = df.parse(unTestedSDate);
 
                     System.out.print("End date (dd-MM-yyyy):");
-                    String unTestedEDate = scannerInput.nextLine();
+                    String unTestedEDate = inputScanner.nextLine();
                     endDate = df.parse(unTestedEDate);
                     if (endDate.before(startDate)){
                         System.out.println("End date is before start date");
@@ -279,7 +338,7 @@ public class InteractionManager {
                     }
                 }
             }catch (ParseException e){
-                System.out.println("Wrong Input Type!");
+                System.out.println("Wrong Date format!");
             }
 
             StringBuffer monthsWithYear = new StringBuffer();
@@ -325,7 +384,6 @@ public class InteractionManager {
                     }
 
                     Date dateInterFullDate = new SimpleDateFormat("dd-MM-yyyy").parse(data[1]);
-                    DateFormat dateWMonthYear = new SimpleDateFormat("MM-yyyy");
 
                     boolean reportPeriod = dateInterFullDate.compareTo(startDate) >= 0 && dateInterFullDate.compareTo(endDate) <= 0;
 
@@ -338,12 +396,16 @@ public class InteractionManager {
                 countInter[display] = counter;
                 display++;
             }
-                for (int i = 0; i < mWYArr.length; i++) {
-                    System.out.println(mWYArr[i] + ": " + countInter[i]);
-                }
 
-        }catch (ParseException | FileNotFoundException | NullPointerException e){
+            for (int i = 0; i < mWYArr.length; i++) {
+                System.out.format("%-15s", mWYArr[i]);
+            }
             System.out.println("");
+            for (int i = 0; i < countInter.length; i++) {
+                System.out.format("%-15s", countInter[i]);
+            }
+        }catch (ParseException | FileNotFoundException | NullPointerException e){
+            System.out.println("Missing file Interaction.txt");
         }
     }
 

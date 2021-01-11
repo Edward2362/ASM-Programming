@@ -28,6 +28,7 @@ public class Main {
         }
 
         InteractionManager.setLatestIdInter(lastIdInter);
+//        interactionManager.askForIDetail();
 //        interactionManager.addInteraction();
 //        interactionManager.serialize();
 
@@ -35,10 +36,11 @@ public class Main {
 //        interactionManager.delete();
 
 //        interactionManager.intersByPotential();
-        interactionManager.intersByMonth();
+//        interactionManager.intersByMonth();
 
 
         LeadManager.setLatestIdLead(lastIdLead);
+        leadManager.askForLDetail();
 //        leadManager.addLead();
 //        leadManager.serialize();
 
@@ -50,10 +52,14 @@ public class Main {
 //        while (true){
 //            System.out.print("Hello! How is your day \n" +
 //                    "Type your order");
-//            String userInput = inputScanner.next();
+//            String userInput = inputScanner.next();23
 //            if (userInput.equals("exit".toLowerCase())){
 //                break;
 //            }
+//        }
+        //Menu
+//        while(true){
+//            System.out.println("Welcome to our company web \n"+"");
 //        }
 
     }
